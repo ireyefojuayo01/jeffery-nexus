@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Jeffery Nexus</title>
+    <meta name="description" content="Articles by Jeffery Nexus on web development, learning Python, and starting out in IT.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        [hidden] { display: none !important; }
+
+        /* ----- Hero ----- */
+        .blog-hero {
+            position: relative;
+            background:
+                linear-gradient(100deg, rgba(10, 25, 50, 0.85) 0%, rgba(10, 61, 145, 0.5) 100%),
+                url('images/hero bg.png') center / cover no-repeat;
+            color: #fff;
+            padding: 70px 0 60px;
+        }
+        .blog-hero .section-label {
+            color: var(--blue-bright);
+        }
+        .blog-hero h1 {
+            font-size: 3.2rem;
+            line-height: 1.1;
+            margin-bottom: 18px;
+        }
+        .blog-hero h1 .accent {
+            background: linear-gradient(90deg, #19b4ff, #6fd3ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        .blog-hero p {
+            color: #d7e6fa;
+            font-size: 1.1rem;
+            max-width: 560px;
+        }
+
+        /* ----- Layout ----- */
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 36px;
+            padding: 40px 0 70px;
+            align-items: start;
+        }
+
+        /* ----- Filter chips ----- */
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .chip {
+            border: 1px solid var(--silver-light);
+            background: #fff;
+            color: var(--text);
+            padding: 9px 18px;
+            border-radius: 10px;
+            font: inherit;
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .chip:hover {
+            border-color: var(--blue);
+        }
+        .chip.active {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+        }
+
+        /* ----- Post cards ----- */
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 24px;
+        }
+        .post-card {
+            background: #fff;
+            border: 1px solid var(--silver-light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        .post-card:hover {
+            transform: translateY(-4px);
+        }
+        .thumb {
+            position: relative;
+            height: 170px;
+            display: grid;
+            place-items: center;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 2.6rem;
+        }
+        .thumb.t-blue   { background: linear-gradient(135deg, #0a3d91, #19b4ff); }
+        .thumb.t-navy   { background: linear-gradient(135deg, #0b1a33, #1677e8); }
+        .pill {
+            position: absolute;
+            left: 14px;
+            bottom: 14px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 999px;
+        }
+        .post-body {
+            padding: 20px 20px 22px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .post-body h3 {
+            font-size: 1.12rem;
+            line-height: 1.3;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .post-body p {
+            color: var(--muted);
+            font-size: 0.92rem;
+            margin-bottom: 14px;
+        }
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+            margin-bottom: 12px;
+        }
+        .read-more {
+            color: var(--blue);
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+        .no-results {
+            display: none;
+            color: var(--muted);
+            margin-top: 20px;
+        }
+
+        /* ----- Sidebar ----- */
+        .sidebar {
+            display: grid;
+            gap: 22px;
+        }
+        .widget {
+            background: #fff;
+            border: 1px solid var(--silver-light);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+        }
+        .widget h4 {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .search {
+            display: flex;
+            border: 1px solid var(--silver);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        .search input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 11px 14px;
+            font: inherit;
+            color: var(--text);
+            outline: none;
+            min-width: 0;
+        }
+        .search button {
+            border: none;
+            background: var(--blue);
+            color: #fff;
+            padding: 0 16px;
+            cursor: pointer;
+        }
+        .cat-list {
+            list-style: none;
+            display: grid;
+            gap: 4px;
+        }
+        .cat-list button {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: none;
+            background: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font: inherit;
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+        }
+        .cat-list button:hover {
+            background: var(--bg);
+        }
+        .cat-list button.active {
+            background: #e8f2fe;
+            color: var(--blue);
+            font-weight: 600;
+        }
+        .cat-list .count {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+        .recent {
+            list-style: none;
+            display: grid;
+            gap: 16px;
+        }
+        .recent li {
+            display: grid;
+            grid-template-columns: 64px 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+        .recent .mini {
+            width: 64px;
+            height: 50px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+        }
+        .recent strong {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.3;
+        }
+        .recent span {
+            font-size: 0.82rem;
+            color: var(--muted);
+        }
+        .quote {
+            background: linear-gradient(135deg, #0a3d91, #1677e8);
+            color: #fff;
+            border: none;
+        }
+        .quote i {
+            font-size: 1.6rem;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+        .quote p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .quote small {
+            opacity: 0.85;
+        }
+
+        /* ----- Footer (dark, like the mockup) ----- */
+        .dark-footer {
+            background: #0b1a33;
+            color: #c9d6ea;
+            padding: 36px 0;
+        }
+        .dark-footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .dark-footer .brand-name {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .dark-footer .brand-name .accent {
+            background: none;
+            -webkit-text-fill-color: var(--blue-bright);
+            color: var(--blue-bright);
+        }
+        .dark-footer small {
+            display: block;
+            color: #8ea3c4;
+            margin-top: 4px;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        .footer-social {
+            display: flex;
+            gap: 14px;
+            font-size: 1.1rem;
+        }
+        .footer-social a:hover {
+            color: var(--blue-bright);
+        }
+
+        /* ----- Responsive ----- */
+        @media (max-width: 1000px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            }
+        }
+        @media (max-width: 600px) {
+            .blog-hero h1 {
+                font-size: 2.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-flex">
+            <div class="logo">
+                <a href="index.html" class="brand">
+                    <span class="img-img"><img src="images/nexus logo.png" alt="Jeffery Nexus Logo"></span>
+                    <span class="brand-name">Jeffery <span class="accent">Nexus</span></span>
+                </a>
+            </div>
+
+            <nav class="navbar" id="primary-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html#hero">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="index.html#project">Projects</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="d-cv">
+                <a href="index.html#contact" class="cv-btn">Get in Touch →</a>
+            </div>
+
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="blog-hero">
+            <div class="container">
+                <h5 class="section-label">BLOG</h5>
+                <h1>Thoughts. Learning.<br><span class="accent">Tech. Growth.</span></h1>
+                <p>I share my learning journey, tech tutorials, and experiences as an IT student and aspiring software developer.</p>
+            </div>
+        </section>
+
+        <div class="container blog-layout">
+            <div>
+                <div class="chips" role="group" aria-label="Filter posts by category">
+                    <button class="chip active" data-filter="all">All Posts</button>
+                    <button class="chip" data-filter="Web Development">Web Development</button>
+                    <button class="chip" data-filter="Programming">Programming</button>
+                </div>
+
+                <div class="post-grid" id="postGrid">
+                    <article class="post-card" data-category="Web Development" data-title="5 Beginner Mistakes in Web Development">
+                        <div class="thumb t-blue" style="background-image: linear-gradient(135deg, rgba(10, 61, 145, 0.55), rgba(25, 180, 255, 0.45)), url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D'); background-size: cover; background-position: center;">
+                            
+                            <span class="pill">Web Development</span>
+                        </div>
+                        <div class="post-body">
+                            <h3>5 Beginner Mistakes in Web Development</h3>
+                            <p>Avoid these common mistakes that slow down your progress...</p>
+                            <div class="post-meta"><i class="fa-regular fa-calendar"></i> <time datetime="2026-09-20">Sep 20, 2026</time></div>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="post-card" data-category="Programming" data-title="Why I'm Learning Python (And You Should Too)">
+                        <div class="thumb t-navy" style="background-image: linear-gradient(135deg, rgba(11, 26, 51, 0.55), rgba(22, 119, 232, 0.45)), url('https://images.unsplash.com/photo-1649180556628-9ba704115795?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D'); background-size: cover; background-position: center;">
+                            <span class="pill">Programming</span>
+                        </div>
+                        <div class="post-body">
+                            <h3>Why I'm Learning Python (And You Should Too)</h3>
+                            <p>Python is powerful, simple, and in demand. Here's why I started...</p>
+                            <div class="post-meta"><i class="fa-regular fa-calendar"></i> <time datetime="2026-09-15">Sep 15, 2026</time></div>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+                </div>
+                <p class="no-results" id="noResults">No posts match your search.</p>
+            </div>
+
+            <aside class="sidebar">
+                <div class="widget">
+                    <div class="search">
+                        <input type="search" id="searchInput" placeholder="Search articles..." aria-label="Search articles">
+                        <button type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <h4>Categories</h4>
+                    <ul class="cat-list">
+                        <li><button class="active" data-filter="all">All Posts <span class="count">2</span></button></li>
+                        <li><button data-filter="Web Development">Web Development <span class="count">1</span></button></li>
+                        <li><button data-filter="Programming">Programming <span class="count">1</span></button></li>
+                    </ul>
+                </div>
+
+                <div class="widget">
+                    <h4>Recent Posts</h4>
+                    <ul class="recent">
+                        <li>
+                            <div class="mini t-blue"><i class="fa-solid fa-laptop-code"></i></div>
+                            <div><strong>5 Beginner Mistakes in Web Development</strong><span>Sep 20, 2026</span></div>
+                        </li>
+                        <li>
+                            <div class="mini t-navy"><i class="fa-brands fa-python"></i></div>
+                            <div><strong>Why I'm Learning Python</strong><span>Sep 15, 2026</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="widget quote">
+                    <i class="fa-solid fa-quote-left"></i>
+                    <p>Consistency today builds the skills for a better tomorrow.</p>
+                    <small>— Jeffery Nexus</small>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="dark-footer">
+        <div class="container">
+            <div>
+                <span class="brand-name">Jeffery <span class="accent">Nexus</span></span>
+                <small>Build. Learn. Create. Grow.</small>
+            </div>
+            <nav class="footer-links">
+                <a href="index.html#hero">Home</a>
+                <a href="about.html">About</a>
+                <a href="index.html#project">Projects</a>
+                <a href="blog.html">Blog</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+            <div class="footer-social">
+                <a href="https://github.com/YOUR-USERNAME" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://linkedin.com/in/YOUR-PROFILE" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://instagram.com/YOUR-PROFILE" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="container" style="margin-top: 20px; color: #8ea3c4; font-size: 0.85rem;">
+            &copy; 2026 Ireyefoju Ayomide Jeffery (Jeffery Nexus). Built by hand.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Category chips and sidebar categories both filter the grid
+        const filterButtons = document.querySelectorAll('[data-filter]');
+        const cards = document.querySelectorAll('.post-card');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        let activeFilter = 'all';
+
+        function applyFilters() {
+            const query = searchInput.value.trim().toLowerCase();
+            let visible = 0;
+            cards.forEach(card => {
+                const matchesCategory = activeFilter === 'all' || card.dataset.category === activeFilter;
+                const matchesSearch = card.dataset.title.toLowerCase().includes(query);
+                const show = matchesCategory && matchesSearch;
+                card.hidden = !show;
+                if (show) visible++;
+            });
+            noResults.style.display = visible === 0 ? 'block' : 'none';
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeFilter = btn.dataset.filter;
+                filterButtons.forEach(b => b.classList.toggle('active', b.dataset.filter === activeFilter));
+                applyFilters();
+            });
+        });
+
+        searchInput.addEventListener('input', applyFilters);
+    </script>
+</body>
+</html>
